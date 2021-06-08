@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Hello World · alexgogoing&#39;s blog</title>
+    <title>web首屏性能优化 · alexgogoing&#39;s blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >Alexgogoing</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">Hello World</a>
+                <a href="#" class="post-name">web首屏性能优化</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Hello World
+            web首屏性能优化
             <!-- 404 -->
             
         </h1>
@@ -264,14 +264,22 @@ height:50vh;
             <div class="post-intros">
                 <!-- 文章页标签  -->
                 
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web">web</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "性能优化">性能优化</a>
+    
+</div>
+                
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">73</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.3k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/08/23</span>
+                    <span class="post-intro-time">2021/05/09</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -395,28 +403,110 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <h1 id="web首屏性能优化"><a href="#web首屏性能优化" class="headerlink" title="web首屏性能优化"></a>web首屏性能优化</h1><blockquote>
+<p>web首屏性能和多个方面有关，白屏时间、首屏时间、网络请求时间等，由此衍生了多个定义如FCP、LCP、TTI等。</p>
+</blockquote>
+<h2 id="定义解释"><a href="#定义解释" class="headerlink" title="定义解释"></a>定义解释</h2><p><img src="//alexgogoing.github.io/2021/05/09/web首屏性能优化/%E7%A4%BA%E6%84%8F1.png" alt="示意1"></p>
+<ul>
+<li><p>白屏时间: </p>
+<p>一般指浏览器开始渲染<body>或者解析完<head><meta name="generator" content="Hexo 3.9.0">的时间是白屏结束的时间点。白屏时间 = firstPaint - performance.timing.navigationStart || pageStartTime</head></body></p>
+</li>
+<li><p>navigationStart: </p>
+</li>
+<li><p>unloadEventStart: </p>
+<p>表示前一个网页（与当前页面同域）unload 的时间戳，如果无前一个网页 unload 或者前一个网页与当前页面不同域，则值为 0。</p>
+</li>
+<li><p>unloadEventEnd: </p>
+<p>返回前一个页面 unload 时间绑定的回掉函数执行完毕的时间戳。</p>
+</li>
+<li><p>redirectStart: </p>
+<p>第一个 HTTP 重定向发生时的时间。有跳转且是同域名内的重定向才算，否则值为 0。</p>
+</li>
+<li><p>redirectEnd: </p>
+<p>最后一个 HTTP 重定向完成时的时间。有跳转且是同域名内部的重定向才算，否则值为 0。</p>
+</li>
+<li><p>fetchStart: </p>
+<p>浏览器准备好使用 HTTP 请求抓取文档的时间，这发生在检查本地缓存之前。</p>
+</li>
+<li><p>domainLookupStart/domainLookupEnd: </p>
+<p>DNS 域名查询开始/结束的时间，如果使用了本地缓存（即无 DNS 查询）或持久连接，则与 fetchStart 值相等</p>
+</li>
+<li><p>connectStart: </p>
+<p>HTTP（TCP）开始/重新 建立连接的时间，如果是持久连接，则与 fetchStart 值相等。</p>
+</li>
+<li><p>connectEnd: </p>
+<p>HTTP（TCP） 完成建立连接的时间（完成握手），如果是持久连接，则与 fetchStart 值相等。</p>
+</li>
+<li><p>secureConnectionStart: </p>
+<p>HTTPS 连接开始的时间，如果不是安全连接，则值为 0。</p>
+</li>
+<li><p>requestStart: </p>
+<p>HTTP 请求读取真实文档开始的时间（完成建立连接），包括从本地读取缓存。</p>
+</li>
+<li><p>responseStart: </p>
+<p>HTTP 开始接收响应的时间（获取到第一个字节），包括从本地读取缓存。</p>
+</li>
+<li><p>responseEnd: </p>
+<p>HTTP 响应全部接收完成的时间（获取到最后一个字节），包括从本地读取缓存。</p>
+</li>
+<li><p>domLoading: </p>
+<p>开始解析渲染 DOM 树的时间，此时 Document.readyState 变为 loading，并将抛出 readystatechange 相关事件。</p>
+</li>
+<li><p>domInteractive: </p>
+<p>完成解析 DOM 树的时间，Document.readyState 变为 interactive，并将抛出 readystatechange 相关事件，注意只是 DOM 树解析完成，这时候并没有开始加载网页内的资源。</p>
+</li>
+<li><p>domContentLoadedEventStart: </p>
+<p>DOM 解析完成后，网页内资源加载开始的时间，在 DOMContentLoaded 事件抛出前发生。</p>
+</li>
+<li><p>domContentLoadedEventEnd: </p>
+<p>DOM 解析完成后，网页内资源加载完成的时间（如 JS 脚本加载执行完毕）。</p>
+</li>
+<li><p>domComplete: </p>
+<p>DOM 树解析完成，且资源也准备就绪的时间，Document.readyState 变为 complete，并将抛出 readystatechange 相关事件。</p>
+</li>
+<li><p>loadEventStart: </p>
+<p>load 事件发送给文档，也即 load 回调函数开始执行的时间。</p>
+</li>
+<li><p>loadEventEnd: </p>
+<p>load 事件的回调函数执行完毕的时间。</p>
+</li>
+</ul>
+<h2 id="关键指标"><a href="#关键指标" class="headerlink" title="关键指标"></a>关键指标</h2><ol>
+<li>网页重定向耗时（Redirect）</li>
+</ol>
+<ol start="2">
+<li>检查本地缓存耗时（AppCache）</li>
+</ol>
+<ol start="3">
+<li>DNS查询耗时（DNS）</li>
+</ol>
+<ol start="4">
+<li>TCP连接耗时（TCP）</li>
+</ol>
+<ol start="5">
+<li>从客户端发起请求到接收到响应的时间（Time To First Byte）</li>
+</ol>
+<ol start="6">
+<li>下载服务端返回数据的时间（HTTP total time）</li>
+</ol>
+<ol start="7">
+<li>DOM加载完成时间（DOMContentLoaded）</li>
+</ol>
+<ol start="8">
+<li>页面load的总耗时（Loaded）</li>
+</ol>
+<p>实践：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>白屏<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 模拟页面 CSS 资源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"https://cdn.bootcdn.net/ajax/libs/basscss/8.1.0/css/basscss-cp.css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="comment">// 白屏结束时间</span></span></span><br><span class="line"><span class="javascript">        <span class="built_in">window</span>.firstPaint = <span class="built_in">Date</span>.now()</span></span><br><span class="line"><span class="javascript">        <span class="comment">// 白屏时间</span></span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(firstPaint - performance.timing.navigationStart)</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">getPerformanceTiming1</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> e = <span class="built_in">window</span>.performance;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">if</span> (e) &#123;</span></span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> t = e.getEntriesByType(<span class="string">"navigation"</span>)[<span class="number">0</span>]</span></span><br><span class="line">                    , r = 0;</span><br><span class="line">                t || (r = (t = e.timing).navigationStart);</span><br><span class="line"><span class="javascript">                <span class="keyword">var</span> n = [&#123;</span></span><br><span class="line"><span class="javascript">                    key: <span class="string">"Redirect"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"\u7f51\u9875\u91cd\u5b9a\u5411\u7684\u8017\u65f6"</span>,</span></span><br><span class="line">                    value: t.redirectEnd - t.redirectStart</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"AppCache"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"\u68c0\u67e5\u672c\u5730\u7f13\u5b58\u7684\u8017\u65f6"</span>,</span></span><br><span class="line">                    value: t.domainLookupStart - t.fetchStart</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"DNS"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"DNS\u67e5\u8be2\u7684\u8017\u65f6"</span>,</span></span><br><span class="line">                    value: t.domainLookupEnd - t.domainLookupStart</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"TCP"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"TCP\u8fde\u63a5\u7684\u8017\u65f6"</span>,</span></span><br><span class="line">                    value: t.connectEnd - t.connectStart</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"Waiting(TTFB)"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"\u4ece\u5ba2\u6237\u7aef\u53d1\u8d77\u8bf7\u6c42\u5230\u63a5\u6536\u5230\u54cd\u5e94\u7684\u65f6\u95f4 / Time To First Byte"</span>,</span></span><br><span class="line">                    value: t.responseStart - t.requestStart</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"Content Download"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"\u4e0b\u8f7d\u670d\u52a1\u7aef\u8fd4\u56de\u6570\u636e\u7684\u65f6\u95f4"</span>,</span></span><br><span class="line">                    value: t.responseEnd - t.responseStart</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"HTTP Total Time"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"http\u8bf7\u6c42\u603b\u8017\u65f6"</span>,</span></span><br><span class="line">                    value: t.responseEnd - t.requestStart</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"DOMContentLoaded"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"dom\u52a0\u8f7d\u5b8c\u6210\u7684\u65f6\u95f4"</span>,</span></span><br><span class="line">                    value: t.domContentLoadedEventEnd - r</span><br><span class="line">                &#125;, &#123;</span><br><span class="line"><span class="javascript">                    key: <span class="string">"Loaded"</span>,</span></span><br><span class="line"><span class="javascript">                    desc: <span class="string">"\u9875\u9762load\u7684\u603b\u8017\u65f6"</span>,</span></span><br><span class="line">                    value: t.loadEventEnd - r</span><br><span class="line">                &#125;];</span><br><span class="line"><span class="javascript">                <span class="built_in">console</span> &amp;&amp; <span class="built_in">console</span>.log &amp;&amp; <span class="built_in">console</span>.log(n);</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line"><span class="javascript">        <span class="comment">// 计算加载时间</span></span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">getPerformanceTiming</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> t = performance.timing;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> times = &#123;&#125;;</span></span><br><span class="line"><span class="javascript">            <span class="comment">// 页面加载完成的时间，用户等待页面可用的时间</span></span></span><br><span class="line">            times.loadPage = t.loadEventEnd - t.navigationStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// 解析 DOM 树结构的时间</span></span></span><br><span class="line">            times.domReady = t.domComplete - t.responseEnd;</span><br><span class="line"><span class="javascript">            <span class="comment">// 重定向的时间</span></span></span><br><span class="line">            times.redirect = t.redirectEnd - t.redirectStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// DNS 查询时间</span></span></span><br><span class="line">            times.lookupDomain = t.domainLookupEnd - t.domainLookupStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// 读取页面第一个字节的时间</span></span></span><br><span class="line">            times.ttfb = t.responseStart - t.navigationStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// 资源请求加载完成的时间</span></span></span><br><span class="line">            times.request = t.responseEnd - t.requestStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// 执行 onload 回调函数的时间</span></span></span><br><span class="line">            times.loadEvent = t.loadEventEnd - t.loadEventStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// DNS 缓存时间</span></span></span><br><span class="line">            times.appcache = t.domainLookupStart - t.fetchStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// 卸载页面的时间</span></span></span><br><span class="line">            times.unloadEvent = t.unloadEventEnd - t.unloadEventStart;</span><br><span class="line"><span class="javascript">            <span class="comment">// TCP 建立连接完成握手的时间</span></span></span><br><span class="line">            times.connect = t.connectEnd - t.connectStart;</span><br><span class="line"><span class="javascript">            <span class="keyword">return</span> times;</span></span><br><span class="line">        &#125;</span><br><span class="line"><span class="javascript">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span></span><br><span class="line">            getPerformanceTiming1();</span><br><span class="line">        &#125;, 0)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="https://alexgogoing.github.io">alexgogoing</a>
-            <p>原文链接：<a href="https://alexgogoing.github.io/2019/08/23/hello-world/">https://alexgogoing.github.io/2019/08/23/hello-world/</a>
-            <p>发表日期：<a href="https://alexgogoing.github.io/2019/08/23/hello-world/">August 23rd 2019, 12:30:00 pm</a>
-            <p>更新日期：<a href="https://alexgogoing.github.io/2019/08/23/hello-world/">June 8th 2021, 8:16:42 pm</a>
+            <p>原文链接：<a href="https://alexgogoing.github.io/2021/05/09/web首屏性能优化/">https://alexgogoing.github.io/2021/05/09/web首屏性能优化/</a>
+            <p>发表日期：<a href="https://alexgogoing.github.io/2021/05/09/web首屏性能优化/">May 9th 2021, 11:05:24 am</a>
+            <p>更新日期：<a href="https://alexgogoing.github.io/2021/05/09/web首屏性能优化/">June 8th 2021, 8:43:30 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -425,12 +515,17 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2020/12/11/header/" title= "不看菜谱看算法">
-                    <div class="nextTitle">不看菜谱看算法</div>
+                <a href= "/2021/05/12/[神奇的JS]定时器校准/" title= "神奇的JS 定时器校准">
+                    <div class="nextTitle">神奇的JS 定时器校准</div>
                 </a>
             
         </li>
         <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2021/04/28/HTML+CSS填坑与挖坑(二)/" title= "HTML+CSS填坑与挖坑（二）">
+                    <div class="prevTitle">HTML+CSS填坑与挖坑（二）</div>
+                </a>
             
         </li>
     </ul>
@@ -543,7 +638,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web首屏性能优化"><span class="toc-number">1.</span> <span class="toc-text">web首屏性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义解释"><span class="toc-number">1.1.</span> <span class="toc-text">定义解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关键指标"><span class="toc-number">1.2.</span> <span class="toc-text">关键指标</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

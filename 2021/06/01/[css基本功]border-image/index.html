@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>alexgogoing&#39;s blog</title>
+    <title>css基本功 border-image · alexgogoing&#39;s blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Alexgogoing</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">css基本功 border-image</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Alexgogoing</a>
 </header>
@@ -220,24 +231,74 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            css基本功 border-image
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">409</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2021/06/01</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,84 +399,65 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/28/HTML+CSS填坑与挖坑(二)/" >
-            
-                <span>HTML+CSS填坑与挖坑（二）</span>
-        </a>
-        <div class="abstract-content">
-            HTML+CSS填坑与挖坑（二）
-此节单独探讨各种布局问题和解决方法
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="css基本功-border-image"><a href="#css基本功-border-image" class="headerlink" title="[css基本功]border-image"></a>[css基本功]border-image</h1><blockquote>
+<p>最近在做cocos的时候，频繁涉及到九宫格切图，猜测cocos九宫格在web端的实现一定是css中的border-image</p>
+</blockquote>
+<h2 id="释义"><a href="#释义" class="headerlink" title="释义"></a>释义</h2><p><code>border-image</code> 共有以下五种属性</p>
+<p><img src="//alexgogoing.github.io/2021/06/01/[css基本功]border-image/image-20210607172023937.png" alt="image-20210607172023937"></p>
+<p>这里，我们先只了解border-image-source、border-image-slice、border-image-repeat这三个属性。</p>
+<p>border-image-source：边框的原始图片地址，这里特别说明一下，想要border-image生效，必须设置border的宽度和类型。</p>
+<p>border-image-slice：边框图片的切割位置，最多有4个值，按照上右下左的顺序对应，赋值办法参考padding，另外赋值时默认单位为像素，不需要加px，支持百分比例如10%，<em>有一个特殊值 fill，代表是否需要用九宫格图片中心填充元素</em>，例如不加fill，只显示四周边框红色，content背景为白色，设置了fill，四周边框和content都为红色。</p>
+<p>border-image-repeat：边框图片除四角外的拉伸方式，有三个可选值repeat（重复）、round（平铺）和round（拉伸）；使用1个参数则表示水平方向及垂直方向均使用此参数；2个参数的话则第一个参数表示水平方向，第二个参数表示垂直方向</p>
+<h2 id="Coding"><a href="#Coding" class="headerlink" title="Coding"></a>Coding</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"> .container &#123;</span><br><span class="line">    display: block;</span><br><span class="line">    border: 1px solid #bbb;</span><br><span class="line">    padding: 50px;</span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line">  .container &gt; .bg &#123;</span><br><span class="line">    display: inline-block;</span><br><span class="line">    width: 160px;</span><br><span class="line">    height: 30px;</span><br><span class="line">    line-height: 30px;</span><br><span class="line">    border-top: 18px solid;</span><br><span class="line">    border-right: 30px solid;</span><br><span class="line">    border-bottom: 18px solid;</span><br><span class="line">    border-left: 30px solid;</span><br><span class="line">    border-image-source: url('./pow.png');</span><br><span class="line">    border-image-slice: 18 30 18 30 fill;</span><br><span class="line">    border-image-repeat: round;</span><br><span class="line">    padding: 10px;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"bg"</span>&gt;</span>文字<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-#4 布局问题1.浮动布局12345678910111213141516171819202122232425262728293031323334&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset="utf-8" /&gt;    &lt;title&gt;浮动布局&lt;/title&gt;    &lt;style type="text/css"&gt;      .wrap1 div&#123;            min-heig...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "布局">布局</a>
-    
-</div>
-            
-        </div>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p><img src="//alexgogoing.github.io/2021/06/01/[css基本功]border-image/image-20210607182634864.png" alt="image-20210607182634864"></p>
+
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/27/HTML+CSS填坑与挖坑/" >
-            
-                <span>HTML+CSS填坑与挖坑</span>
-        </a>
-        <div class="abstract-content">
-            HTML+CSS填坑与挖坑#1 物理1px边框问题
-原因：最主要的原因就是设计分辨率和设备分辨率有差造成的，比如设计稿为750px宽，1px边框线，但是在实际设备中，可能宽为375px，那么我们的边框线需要设置为0.5px。对于retina屏上仅仅显示1物理像素的边框。一般的，Retina 屏的device-pixel-ratio &gt;= 2
-
-解决方案：
-1.通过device-pixel-ratio适配
-devicePixelRatio(缩写dpr)的准确含义是1个逻辑像素（px）需要使用几个物理像素来绘制，比如dpr = 2，代表1px需要2个物理像素绘制展现。
-
-（设备物理像素...
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://alexgogoing.github.io">alexgogoing</a>
+            <p>原文链接：<a href="https://alexgogoing.github.io/2021/06/01/[css基本功]border-image/">https://alexgogoing.github.io/2021/06/01/[css基本功]border-image/</a>
+            <p>发表日期：<a href="https://alexgogoing.github.io/2021/06/01/[css基本功]border-image/">June 1st 2021, 12:30:00 pm</a>
+            <p>更新日期：<a href="https://alexgogoing.github.io/2021/06/01/[css基本功]border-image/">June 8th 2021, 8:43:41 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/27</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-</div>
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2021/06/02/[css基本功]position中的sticky/" title= "css基本功 border-image">
+                    <div class="nextTitle">css基本功 border-image</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2021/05/13/css盒模型/" title= "css盒模型">
+                    <div class="prevTitle">css盒模型</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -495,6 +537,24 @@ devicePixelRatio(缩写dpr)的准确含义是1个逻辑像素（px）需要使�
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#css基本功-border-image"><span class="toc-number">1.</span> <span class="toc-text">[css基本功]border-image</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#释义"><span class="toc-number">1.1.</span> <span class="toc-text">释义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Coding"><span class="toc-number">1.2.</span> <span class="toc-text">Coding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果"><span class="toc-number">1.3.</span> <span class="toc-text">效果</span></a></li></ol></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -866,6 +926,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

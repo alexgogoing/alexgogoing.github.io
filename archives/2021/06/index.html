@@ -346,30 +346,27 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/28/HTML+CSS填坑与挖坑(二)/" >
+        <a class="abstract-title" href = "/2021/06/02/[css基本功]position中的sticky/" >
             
-                <span>HTML+CSS填坑与挖坑（二）</span>
+                <span>css基本功 border-image</span>
         </a>
         <div class="abstract-content">
-            HTML+CSS填坑与挖坑（二）
-此节单独探讨各种布局问题和解决方法
+            [css基本功] position的sticky（粘性布局）
+众所周知，position的四个属性值为static、relative、absolute、fixed，在css3中新增了sticky，意为粘性布局
 
-#4 布局问题1.浮动布局12345678910111213141516171819202122232425262728293031323334&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset="utf-8" /&gt;    &lt;title&gt;浮动布局&lt;/title&gt;    &lt;style type="text/css"&gt;      .wrap1 div&#123;            min-heig...
+释义position: sticky 结合了static和fixed两者特性，当页面元素满足固定距离时，使用类fixed定位方式（top、right、bottom、left生效）；当未达到固定距离时，依照默认布局排列，top、right、bottom、left不生效。
+Coding12345678910111213141516171819202122232425262728293...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/28</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/06/02</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
-    
         <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "布局">布局</a>
     
 </div>
             
@@ -382,30 +379,28 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/27/HTML+CSS填坑与挖坑/" >
+        <a class="abstract-title" href = "/2021/06/01/[css基本功]border-image/" >
             
-                <span>HTML+CSS填坑与挖坑</span>
+                <span>css基本功 border-image</span>
         </a>
         <div class="abstract-content">
-            HTML+CSS填坑与挖坑#1 物理1px边框问题
-原因：最主要的原因就是设计分辨率和设备分辨率有差造成的，比如设计稿为750px宽，1px边框线，但是在实际设备中，可能宽为375px，那么我们的边框线需要设置为0.5px。对于retina屏上仅仅显示1物理像素的边框。一般的，Retina 屏的device-pixel-ratio &gt;= 2
+            [css基本功]border-image
+最近在做cocos的时候，频繁涉及到九宫格切图，猜测cocos九宫格在web端的实现一定是css中的border-image
 
-解决方案：
-1.通过device-pixel-ratio适配
-devicePixelRatio(缩写dpr)的准确含义是1个逻辑像素（px）需要使用几个物理像素来绘制，比如dpr = 2，代表1px需要2个物理像素绘制展现。
+释义border-image 共有以下五种属性
 
-（设备物理像素...
+这里，我们先只了解border-image-source、border-image-slice、border-image-repeat这三个属性。
+border-image-source：边框的原始图片地址，这里特别说明一下，想要border-image生效，必须设置border的宽度和类型。
+border-image-slice：边框图片的切割位置，最多有4个值，按照上...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/27</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/06/01</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
     

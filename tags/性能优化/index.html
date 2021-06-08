@@ -346,68 +346,38 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/28/HTML+CSS填坑与挖坑(二)/" >
+        <a class="abstract-title" href = "/2021/05/09/web首屏性能优化/" >
             
-                <span>HTML+CSS填坑与挖坑（二）</span>
+                <span>web首屏性能优化</span>
         </a>
         <div class="abstract-content">
-            HTML+CSS填坑与挖坑（二）
-此节单独探讨各种布局问题和解决方法
+            web首屏性能优化
+web首屏性能和多个方面有关，白屏时间、首屏时间、网络请求时间等，由此衍生了多个定义如FCP、LCP、TTI等。
 
-#4 布局问题1.浮动布局12345678910111213141516171819202122232425262728293031323334&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset="utf-8" /&gt;    &lt;title&gt;浮动布局&lt;/title&gt;    &lt;style type="text/css"&gt;      .wrap1 div&#123;            min-heig...
+定义解释
+
+白屏时间: 
+一般指浏览器开始渲染或者解析完的时间是白屏结束的时间点。白屏时间 = firstPaint - performance.timing.navigationStart || pageStartTime
+
+navigationStart: 
+
+unloadEventStart: 
+表示前一个网页（与当前页面同域）unload 的时间戳，如果无前一个网页 unload 或者前一个网页与当前页面不同域，则值为 0。
+
+unloadEve...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/28</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/05/09</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web">web</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "布局">布局</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/27/HTML+CSS填坑与挖坑/" >
-            
-                <span>HTML+CSS填坑与挖坑</span>
-        </a>
-        <div class="abstract-content">
-            HTML+CSS填坑与挖坑#1 物理1px边框问题
-原因：最主要的原因就是设计分辨率和设备分辨率有差造成的，比如设计稿为750px宽，1px边框线，但是在实际设备中，可能宽为375px，那么我们的边框线需要设置为0.5px。对于retina屏上仅仅显示1物理像素的边框。一般的，Retina 屏的device-pixel-ratio &gt;= 2
-
-解决方案：
-1.通过device-pixel-ratio适配
-devicePixelRatio(缩写dpr)的准确含义是1个逻辑像素（px）需要使用几个物理像素来绘制，比如dpr = 2，代表1px需要2个物理像素绘制展现。
-
-（设备物理像素...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/27</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "性能优化">性能优化</a>
     
 </div>
             
