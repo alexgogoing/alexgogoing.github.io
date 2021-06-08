@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="alexgogoing">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="alexgogoing">
+    
+    <meta name="keywords" content="blog,javascript,算法">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>浏览器同源政策及其规避方法 · alexgogoing&#39;s blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Alexgogoing</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">浏览器同源政策及其规避方法</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Alexgogoing</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            浏览器同源政策及其规避方法
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web">web</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.7k</span>阅读时长: <span class="post-count reading-time">10 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2021/03/24</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="浏览器同源政策及其规避方法"><a href="#浏览器同源政策及其规避方法" class="headerlink" title="浏览器同源政策及其规避方法"></a>浏览器同源政策及其规避方法</h1><p>浏览器安全的基石是”同源政策”（<a href="https://en.wikipedia.org/wiki/Same-origin_policy" target="_blank" rel="noopener">same-origin policy</a>）。很多开发者都知道这一点，但了解得不全面。</p>
+<p>本文详细介绍”同源政策”的各个方面，以及如何规避它。</p>
+<h2 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h2><h3 id="1-1-含义"><a href="#1-1-含义" class="headerlink" title="1.1 含义"></a>1.1 含义</h3><p>1995 年，同源政策由 Netscape 公司引入浏览器。目前，所有浏览器都实行这个政策。</p>
+<p>最初，它的含义是指，A 网页设置的 Cookie，B 网页不能打开，除非这两个网页”同源”。所谓”同源”指的是”三个相同”。</p>
+<blockquote>
+<ul>
+<li>协议相同</li>
+<li>域名相同</li>
+<li>端口相同</li>
+</ul>
+</blockquote>
+<p>举例来说，<code>http://www.example.com/dir/page.html</code>这个网址，协议是<code>http://</code>，域名是<code>www.example.com</code>，端口是<code>80</code>（默认端口可以省略）。它的同源情况如下。</p>
+<blockquote>
+<ul>
+<li><code>http://www.example.com/dir2/other.html</code>：同源</li>
+<li><code>http://example.com/dir/other.html</code>：不同源（域名不同）</li>
+<li><code>http://v2.www.example.com/dir/other.html</code>：不同源（域名不同）</li>
+<li><code>http://www.example.com:81/dir/other.html</code>：不同源（端口不同）</li>
+</ul>
+</blockquote>
+<h3 id="1-2-目的"><a href="#1-2-目的" class="headerlink" title="1.2 目的"></a>1.2 目的</h3><p>同源政策的目的，是为了保证用户信息的安全，防止恶意的网站窃取数据。</p>
+<p>设想这样一种情况：A 网站是一家银行，用户登录以后，又去浏览其他网站。如果其他网站可以读取 A 网站的 Cookie，会发生什么？</p>
+<p>很显然，如果 Cookie 包含隐私（比如存款总额），这些信息就会泄漏。更可怕的是，Cookie 往往用来保存用户的登录状态，如果用户没有退出登录，其他网站就可以冒充用户，为所欲为。因为浏览器同时还规定，提交表单不受同源政策的限制。</p>
+<p>由此可见，”同源政策”是必需的，否则 Cookie 可以共享，互联网就毫无安全可言了。</p>
+<h3 id="1-3-限制范围"><a href="#1-3-限制范围" class="headerlink" title="1.3 限制范围"></a>1.3 限制范围</h3><p>随着互联网的发展，”同源政策”越来越严格。目前，如果非同源，共有三种行为受到限制。</p>
+<blockquote>
+<p>（1） Cookie、LocalStorage 和 IndexDB 无法读取。</p>
+<p>（2） DOM 无法获得。</p>
+<p>（3） AJAX 请求不能发送。</p>
+</blockquote>
+<p>虽然这些限制是必要的，但是有时很不方便，合理的用途也受到影响。下面，我将详细介绍，如何规避上面三种限制。</p>
+<h2 id="二、Cookie"><a href="#二、Cookie" class="headerlink" title="二、Cookie"></a>二、Cookie</h2><p>Cookie 是服务器写入浏览器的一小段信息，只有同源的网页才能共享。但是，两个网页一级域名相同，只是二级域名不同，浏览器允许通过设置<code>document.domain</code>共享 Cookie。</p>
+<p>举例来说，A 网页是<code>http://w1.example.com/a.html</code>，B 网页是<code>http://w2.example.com/b.html</code>，那么只要设置相同的<code>document.domain</code>，两个网页就可以共享 Cookie。</p>
+<blockquote>
+<p>document.domain = ‘example.com’;</p>
+</blockquote>
+<p>现在，A 网页通过脚本设置一个 Cookie。</p>
+<blockquote>
+<p>document.cookie = “test1=hello”;</p>
+</blockquote>
+<p>B 网页就可以读到这个 Cookie。</p>
+<blockquote>
+<p>var allCookie = document.cookie;</p>
+</blockquote>
+<p>注意，这种方法只适用于 Cookie 和 iframe 窗口，LocalStorage 和 IndexDB 无法通过这种方法，规避同源政策，而要使用下文介绍的 PostMessage API。</p>
+<p>另外，服务器也可以在设置 Cookie 的时候，指定 Cookie 的所属域名为一级域名，比如<code>.example.com</code>。</p>
+<blockquote>
+<p>Set-Cookie: key=value; domain=.example.com; path=/</p>
+</blockquote>
+<p>这样的话，二级域名和三级域名不用做任何设置，都可以读取这个 Cookie。</p>
+<h2 id="三、iframe"><a href="#三、iframe" class="headerlink" title="三、iframe"></a>三、iframe</h2><p>如果两个网页不同源，就无法拿到对方的 DOM。典型的例子是<code>iframe</code>窗口和<code>window.open</code>方法打开的窗口，它们与父窗口无法通信。</p>
+<p>比如，父窗口运行下面的命令，如果<code>iframe</code>窗口不是同源，就会报错。</p>
+<blockquote>
+<p>document.getElementById(“myIFrame”).contentWindow.document<br>// Uncaught DOMException: Blocked a frame from accessing a cross-origin frame.</p>
+</blockquote>
+<p>上面命令中，父窗口想获取子窗口的 DOM，因为跨源导致报错。</p>
+<p>反之亦然，子窗口获取主窗口的 DOM 也会报错。</p>
+<blockquote>
+<p>window.parent.document.body<br>// 报错</p>
+</blockquote>
+<p>如果两个窗口一级域名相同，只是二级域名不同，那么设置上一节介绍的<code>document.domain</code>属性，就可以规避同源政策，拿到 DOM。</p>
+<p>对于完全不同源的网站，目前有三种方法，可以解决跨域窗口的通信问题。</p>
+<blockquote>
+<ul>
+<li>片段识别符（fragment identifier）</li>
+<li>window.name</li>
+<li>跨文档通信 API（Cross-document messaging）</li>
+</ul>
+</blockquote>
+<h3 id="3-1-片段识别符"><a href="#3-1-片段识别符" class="headerlink" title="3.1 片段识别符"></a>3.1 片段识别符</h3><p>片段标识符（fragment identifier）指的是，URL 的<code>#</code>号后面的部分，比如<code>http://example.com/x.html#fragment</code>的<code>#fragment</code>。如果只是改变片段标识符，页面不会重新刷新。</p>
+<p>父窗口可以把信息，写入子窗口的片段标识符。</p>
+<blockquote>
+<p>var src = originURL + ‘#’ + data;<br>document.getElementById(‘myIFrame’).src = src;</p>
+</blockquote>
+<p>子窗口通过监听<code>hashchange</code>事件得到通知。</p>
+<blockquote>
+<p>window.onhashchange = checkMessage;</p>
+<p>function checkMessage() {<br>var message = window.location.hash;<br>// …<br>}</p>
+</blockquote>
+<p>同样的，子窗口也可以改变父窗口的片段标识符。</p>
+<blockquote>
+<p>parent.location.href= target + “#” + hash;</p>
+</blockquote>
+<h3 id="3-2-window-name"><a href="#3-2-window-name" class="headerlink" title="3.2 window.name"></a>3.2 window.name</h3><p>浏览器窗口有<code>window.name</code>属性。这个属性的最大特点是，无论是否同源，只要在同一个窗口里，前一个网页设置了这个属性，后一个网页可以读取它。</p>
+<p>父窗口先打开一个子窗口，载入一个不同源的网页，该网页将信息写入<code>window.name</code>属性。</p>
+<blockquote>
+<p>window.name = data;</p>
+</blockquote>
+<p>接着，子窗口跳回一个与主窗口同域的网址。</p>
+<blockquote>
+<p>location = ‘<a href="http://parent.url.com/xxx.html" target="_blank" rel="noopener">http://parent.url.com/xxx.html</a>‘;</p>
+</blockquote>
+<p>然后，主窗口就可以读取子窗口的<code>window.name</code>了。</p>
+<blockquote>
+<p>var data = document.getElementById(‘myFrame’).contentWindow.name;</p>
+</blockquote>
+<p>这种方法的优点是，<code>window.name</code>容量很大，可以放置非常长的字符串；缺点是必须监听子窗口<code>window.name</code>属性的变化，影响网页性能。</p>
+<h3 id="3-3-window-postMessage"><a href="#3-3-window-postMessage" class="headerlink" title="3.3 window.postMessage"></a>3.3 window.postMessage</h3><p>上面两种方法都属于破解，HTML5 为了解决这个问题，引入了一个全新的 API：跨文档通信 API（Cross-document messaging）。</p>
+<p>这个 API 为<code>window</code>对象新增了一个<code>window.postMessage</code>方法，允许跨窗口通信，不论这两个窗口是否同源。</p>
+<p>举例来说，父窗口<code>http://aaa.com</code>向子窗口<code>http://bbb.com</code>发消息，调用<code>postMessage</code>方法就可以了。</p>
+<blockquote>
+<p>var popup = window.open(‘<a href="http://bbb.com" target="_blank" rel="noopener">http://bbb.com</a>, ‘title’);<br>popup.postMessage(‘Hello World!’, ‘<a href="http://bbb.com" target="_blank" rel="noopener">http://bbb.com</a>‘);</p>
+</blockquote>
+<p><code>postMessage</code>方法的第一个参数是具体的信息内容，第二个参数是接收消息的窗口的源（origin），即”协议 + 域名 + 端口”。也可以设为<code>*</code>，表示不限制域名，向所有窗口发送。</p>
+<p>子窗口向父窗口发送消息的写法类似。</p>
+<blockquote>
+<p>window.opener.postMessage(‘Nice to see you’, ‘<a href="http://aaa.com" target="_blank" rel="noopener">http://aaa.com</a>‘);</p>
+</blockquote>
+<p>父窗口和子窗口都可以通过<code>message</code>事件，监听对方的消息。</p>
+<blockquote>
+<p>window.addEventListener(‘message’, function(e) {<br>console.log(e.data);<br>},false);</p>
+</blockquote>
+<p><code>message</code>事件的事件对象<code>event</code>，提供以下三个属性。</p>
+<blockquote>
+<ul>
+<li><code>event.source</code>：发送消息的窗口</li>
+<li><code>event.origin</code>: 消息发向的网址</li>
+<li><code>event.data</code>: 消息内容</li>
+</ul>
+</blockquote>
+<p>下面的例子是，子窗口通过<code>event.source</code>属性引用父窗口，然后发送消息。</p>
+<blockquote>
+<p>window.addEventListener(‘message’, receiveMessage);<br>function receiveMessage(event) {<br>event.source.postMessage(‘Nice to see you!’, ‘*’);<br>}</p>
+</blockquote>
+<p><code>event.origin</code>属性可以过滤不是发给本窗口的消息。</p>
+<blockquote>
+<p>window.addEventListener(‘message’, receiveMessage);<br>function receiveMessage(event) {<br>if (event.origin !== ‘<a href="http://aaa.com" target="_blank" rel="noopener">http://aaa.com</a>‘) return;<br>if (event.data === ‘Hello World’) {<br>event.source.postMessage(‘Hello’, event.origin);<br>} else {<br>console.log(event.data);<br>}<br>}</p>
+</blockquote>
+<h3 id="3-4-LocalStorage"><a href="#3-4-LocalStorage" class="headerlink" title="3.4 LocalStorage"></a>3.4 LocalStorage</h3><p>通过<code>window.postMessage</code>，读写其他窗口的 LocalStorage 也成为了可能。</p>
+<p>下面是一个例子，主窗口写入 iframe 子窗口的<code>localStorage</code>。</p>
+<blockquote>
+<p>window.onmessage = function(e) {<br>if (e.origin !== ‘<a href="http://bbb.com" target="_blank" rel="noopener">http://bbb.com</a>‘) {<br>return;<br>}<br>var payload = JSON.parse(e.data);<br>localStorage.setItem(payload.key, JSON.stringify(payload.data));<br>};</p>
+</blockquote>
+<p>上面代码中，子窗口将父窗口发来的消息，写入自己的 LocalStorage。</p>
+<p>父窗口发送消息的代码如下。</p>
+<blockquote>
+<p>var win = document.getElementsByTagName(‘iframe’)[0].contentWindow;<br>var obj = { name: ‘Jack’ };<br>win.postMessage(JSON.stringify({key: ‘storage’, data: obj}), ‘<a href="http://bbb.com" target="_blank" rel="noopener">http://bbb.com</a>‘);</p>
+</blockquote>
+<p>加强版的子窗口接收消息的代码如下。</p>
+<blockquote>
+<p>window.onmessage = function(e) {<br>if (e.origin !== ‘<a href="http://bbb.com" target="_blank" rel="noopener">http://bbb.com</a>‘) return;<br>var payload = JSON.parse(e.data);<br>switch (payload.method) {<br>case ‘set’:<br>localStorage.setItem(payload.key, JSON.stringify(payload.data));<br>break;<br>case ‘get’:<br>var parent = window.parent;<br>var data = localStorage.getItem(payload.key);<br>parent.postMessage(data, ‘<a href="http://aaa.com" target="_blank" rel="noopener">http://aaa.com</a>‘);<br>break;<br>case ‘remove’:<br>localStorage.removeItem(payload.key);<br>break;<br>}<br>};</p>
+</blockquote>
+<p>加强版的父窗口发送消息代码如下。</p>
+<blockquote>
+<p>var win = document.getElementsByTagName(‘iframe’)[0].contentWindow;<br>var obj = { name: ‘Jack’ };<br>// 存入对象<br>win.postMessage(JSON.stringify({key: ‘storage’, method: ‘set’, data: obj}), ‘<a href="http://bbb.com" target="_blank" rel="noopener">http://bbb.com</a>‘);<br>// 读取对象<br>win.postMessage(JSON.stringify({key: ‘storage’, method: “get”}), “*”);<br>window.onmessage = function(e) {<br>if (e.origin != ‘<a href="http://aaa.com" target="_blank" rel="noopener">http://aaa.com</a>‘) return;<br>// “Jack”<br>console.log(JSON.parse(e.data).name);<br>};</p>
+</blockquote>
+<h2 id="四、AJAX"><a href="#四、AJAX" class="headerlink" title="四、AJAX"></a>四、AJAX</h2><p>同源政策规定，AJAX 请求只能发给同源的网址，否则就报错。</p>
+<p>除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制。</p>
+<blockquote>
+<ul>
+<li>JSONP</li>
+<li>WebSocket</li>
+<li>CORS</li>
+</ul>
+</blockquote>
+<h3 id="4-1-JSONP"><a href="#4-1-JSONP" class="headerlink" title="4.1 JSONP"></a>4.1 JSONP</h3><p>JSONP 是服务器与客户端跨源通信的常用方法。最大特点就是简单适用，老式浏览器全部支持，服务器改造非常小。</p>
+<p>它的基本思想是，网页通过添加一个<code>&lt;script&gt;</code>元素，向服务器请求 JSON 数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。</p>
+<p>首先，网页动态插入<code>&lt;script&gt;</code>元素，由它向跨源网址发出请求。</p>
+<blockquote>
+<p>function addScriptTag(src) {<br>var script = document.createElement(‘script’);<br>script.setAttribute(“type”,”text/javascript”);<br>script.src = src;<br>document.body.appendChild(script);<br>}</p>
+<p>window.onload = function () {<br>addScriptTag(‘<a href="http://example.com/ip?callback=foo" target="_blank" rel="noopener">http://example.com/ip?callback=foo</a>‘);<br>}</p>
+<p>function foo(data) {<br>console.log(‘Your public IP address is: ‘ + data.ip);<br>};</p>
+</blockquote>
+<p>上面代码通过动态添加<code>&lt;script&gt;</code>元素，向服务器<code>example.com</code>发出请求。注意，该请求的查询字符串有一个<code>callback</code>参数，用来指定回调函数的名字，这对于 JSONP 是必需的。</p>
+<p>服务器收到这个请求以后，会将数据放在回调函数的参数位置返回。</p>
+<blockquote>
+<p>foo({<br>“ip”: “8.8.8.8”<br>});</p>
+</blockquote>
+<p>由于<code>&lt;script&gt;</code>元素请求的脚本，直接作为代码运行。这时，只要浏览器定义了<code>foo</code>函数，该函数就会立即调用。作为参数的 JSON 数据被视为 JavaScript 对象，而不是字符串，因此避免了使用<code>JSON.parse</code>的步骤。</p>
+<h3 id="4-2-WebSocket"><a href="#4-2-WebSocket" class="headerlink" title="4.2 WebSocket"></a>4.2 WebSocket</h3><p>WebSocket 是一种通信协议，使用<code>ws://</code>（非加密）和<code>wss://</code>（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。</p>
+<p>下面是一个例子，浏览器发出的 WebSocket 请求的头信息（摘自<a href="https://en.wikipedia.org/wiki/WebSocket" target="_blank" rel="noopener">维基百科</a>）。</p>
+<blockquote>
+<p>GET /chat HTTP/1.1<br>Host: server.example.com<br>Upgrade: websocket<br>Connection: Upgrade<br>Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==<br>Sec-WebSocket-Protocol: chat, superchat<br>Sec-WebSocket-Version: 13<br>Origin: <a href="http://example.com" target="_blank" rel="noopener">http://example.com</a></p>
+</blockquote>
+<p>上面代码中，有一个字段是<code>Origin</code>，表示该请求的请求源（origin），即发自哪个域名。</p>
+<p>正是因为有了<code>Origin</code>这个字段，所以 WebSocket 才没有实行同源政策。因为服务器可以根据这个字段，判断是否许可本次通信。如果该域名在白名单内，服务器就会做出如下回应。</p>
+<blockquote>
+<p>HTTP/1.1 101 Switching Protocols<br>Upgrade: websocket<br>Connection: Upgrade<br>Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=<br>Sec-WebSocket-Protocol: chat</p>
+</blockquote>
+<h3 id="4-3-CORS"><a href="#4-3-CORS" class="headerlink" title="4.3 CORS"></a>4.3 CORS</h3><p>CORS 是跨源资源分享（Cross-Origin Resource Sharing）的缩写。它是 W3C 标准，是跨源 AJAX 请求的根本解决方法。相比 JSONP 只能发<code>GET</code>请求，CORS 允许任何类型的请求。</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://alexgogoing.github.io">alexgogoing</a>
+            <p>原文链接：<a href="https://alexgogoing.github.io/2021/03/24/浏览器同源政策及其规避方法/">https://alexgogoing.github.io/2021/03/24/浏览器同源政策及其规避方法/</a>
+            <p>发表日期：<a href="https://alexgogoing.github.io/2021/03/24/浏览器同源政策及其规避方法/">March 24th 2021, 6:07:41 pm</a>
+            <p>更新日期：<a href="https://alexgogoing.github.io/2021/03/24/浏览器同源政策及其规避方法/">June 8th 2021, 8:13:28 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2021/04/04/css技能树扎根/" title= "CSS技能树扎根">
+                    <div class="nextTitle">CSS技能树扎根</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2021/01/26/正则表达式匹配/" title= "正则表达式匹配">
+                    <div class="prevTitle">正则表达式匹配</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:alexgogoing@sina.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/alexgogoing" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/atom.xml" class="iconfont-archer rss" target="_blank" title=rss></a>
+            
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#浏览器同源政策及其规避方法"><span class="toc-number">1.</span> <span class="toc-text">浏览器同源政策及其规避方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、概述"><span class="toc-number">1.1.</span> <span class="toc-text">一、概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-含义"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 含义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-目的"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-限制范围"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 限制范围</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Cookie"><span class="toc-number">1.2.</span> <span class="toc-text">二、Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、iframe"><span class="toc-number">1.3.</span> <span class="toc-text">三、iframe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-片段识别符"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 片段识别符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-window-name"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 window.name</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-window-postMessage"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 window.postMessage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-LocalStorage"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 LocalStorage</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、AJAX"><span class="toc-number">1.4.</span> <span class="toc-text">四、AJAX</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-JSONP"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 JSONP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-WebSocket"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 WebSocket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-CORS"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 CORS</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 12
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2021 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/13</span><a class="archive-post-title" href= "/2021/05/13/css盒模型/" >css盒模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/12</span><a class="archive-post-title" href= "/2021/05/12/[神奇的JS]定时器校准/" >定时器校准</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2021/04/28/HTML+CSS填坑与挖坑(二)/" >HTML+CSS填坑与挖坑（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/27</span><a class="archive-post-title" href= "/2021/04/27/HTML+CSS填坑与挖坑/" >HTML+CSS填坑与挖坑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/05</span><a class="archive-post-title" href= "/2021/04/05/css继承/" >CSS继承</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/04</span><a class="archive-post-title" href= "/2021/04/04/css技能树扎根/" >CSS技能树扎根</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/24</span><a class="archive-post-title" href= "/2021/03/24/浏览器同源政策及其规避方法/" >浏览器同源政策及其规避方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/26</span><a class="archive-post-title" href= "/2021/01/26/正则表达式匹配/" >正则表达式匹配</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/05</span><a class="archive-post-title" href= "/2021/01/05/Z字型字符变换/" >Z字型字符变换</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/27</span><a class="archive-post-title" href= "/2020/12/27/最长回文字符串/" >最长回文字符串</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/11</span><a class="archive-post-title" href= "/2020/12/11/header/" >不看菜谱看算法</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/23</span><a class="archive-post-title" href= "/2019/08/23/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="html"><span class="iconfont-archer">&#xe606;</span>html</span>
+    
+        <span class="sidebar-tag-name" data-tags="css"><span class="iconfont-archer">&#xe606;</span>css</span>
+    
+        <span class="sidebar-tag-name" data-tags="布局"><span class="iconfont-archer">&#xe606;</span>布局</span>
+    
+        <span class="sidebar-tag-name" data-tags="算法"><span class="iconfont-archer">&#xe606;</span>算法</span>
+    
+        <span class="sidebar-tag-name" data-tags="javascript"><span class="iconfont-archer">&#xe606;</span>javascript</span>
+    
+        <span class="sidebar-tag-name" data-tags="奇技"><span class="iconfont-archer">&#xe606;</span>奇技</span>
+    
+        <span class="sidebar-tag-name" data-tags="web"><span class="iconfont-archer">&#xe606;</span>web</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "alexgogoing"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
