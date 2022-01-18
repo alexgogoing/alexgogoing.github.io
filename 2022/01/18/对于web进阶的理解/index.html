@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>alexgogoing&#39;s blog</title>
+    <title>对于web进阶的理解 · alexgogoing&#39;s blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Alexgogoing</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">对于web进阶的理解</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Alexgogoing</a>
 </header>
@@ -220,24 +231,68 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/index-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            对于web进阶的理解
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">26</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2022/01/18</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,153 +393,49 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/28/HTML+CSS填坑与挖坑(二)/" >
-            
-                <span>HTML+CSS填坑与挖坑（二）</span>
-        </a>
-        <div class="abstract-content">
-            HTML+CSS填坑与挖坑（二）
-此节单独探讨各种布局问题和解决方法
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="对于web进阶的理解"><a href="#对于web进阶的理解" class="headerlink" title="对于web进阶的理解"></a>对于web进阶的理解</h1><p>web1.0 广播型<br>web2.0 视觉分享型<br>web3.0 深度体验型</p>
 
-#4 布局问题1.浮动布局12345678910111213141516171819202122232425262728293031323334&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;    &lt;meta charset="utf-8" /&gt;    &lt;title&gt;浮动布局&lt;/title&gt;    &lt;style type="text/css"&gt;      .wrap1 div&#123;            min-heig...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "布局">布局</a>
-    
-</div>
-            
-        </div>
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/27/HTML+CSS填坑与挖坑/" >
-            
-                <span>HTML+CSS填坑与挖坑</span>
-        </a>
-        <div class="abstract-content">
-            HTML+CSS填坑与挖坑#1 物理1px边框问题
-原因：最主要的原因就是设计分辨率和设备分辨率有差造成的，比如设计稿为750px宽，1px边框线，但是在实际设备中，可能宽为375px，那么我们的边框线需要设置为0.5px。对于retina屏上仅仅显示1物理像素的边框。一般的，Retina 屏的device-pixel-ratio &gt;= 2
-
-解决方案：
-1.通过device-pixel-ratio适配
-devicePixelRatio(缩写dpr)的准确含义是1个逻辑像素（px）需要使用几个物理像素来绘制，比如dpr = 2，代表1px需要2个物理像素绘制展现。
-
-（设备物理像素...
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://alexgogoing.github.io">alexgogoing</a>
+            <p>原文链接：<a href="https://alexgogoing.github.io/2022/01/18/对于web进阶的理解/">https://alexgogoing.github.io/2022/01/18/对于web进阶的理解/</a>
+            <p>发表日期：<a href="https://alexgogoing.github.io/2022/01/18/对于web进阶的理解/">January 18th 2022, 8:22:00 pm</a>
+            <p>更新日期：<a href="https://alexgogoing.github.io/2022/01/18/对于web进阶的理解/">January 18th 2022, 8:24:22 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/27</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "html">html</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/05/css继承/" >
-            
-                <span>CSS继承</span>
-        </a>
-        <div class="abstract-content">
-            CSS继承
-html标签和css属性浏览器兼容性查询网站 https://www.caniuse.com/
-
-1. 有继承性的属性#1.字体系列属性font：组合字体
-font-family：规定元素的字体系列
-font-weight：设置字体的粗细
-font-size：设置字体的尺寸
-font-style：定义字体的风格
-font-variant：设置小型大写字母的字体显示文本，这意味着所有的小写字母均会被转换为大写，但是所有使用小型大写字体的字母与其余文本相比，其字体尺寸更小。
-font-stretch：对当前的 font-family 进行伸缩变形。所有主流浏览器都不支持。
-fon...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/05</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2021/04/04/css技能树扎根/" >
-            
-                <span>CSS技能树扎根</span>
-        </a>
-        <div class="abstract-content">
-            CSS技能树扎根
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2021/04/04</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "css">css</a>
-    
-</div>
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2021/06/10/meta标签详解/" title= "meta标签详解">
+                    <div class="prevTitle">meta标签详解</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -564,6 +515,24 @@ fon...
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#对于web进阶的理解"><span class="toc-number">1.</span> <span class="toc-text">对于web进阶的理解</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1004,6 +973,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
